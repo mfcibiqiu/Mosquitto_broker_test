@@ -1,0 +1,18 @@
+﻿  main.c
+C:\My\Projects\visual\Mosquitto\Mosquitto\main.c(45,7): warning C4013: sleep: нет определения; предполагается "extern" с возвратом типа "int"
+C:\My\Projects\visual\Mosquitto\Mosquitto\main.c(46,15): warning C4013: random: нет определения; предполагается "extern" с возвратом типа "int"
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_lib_init в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_lib_cleanup в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_new в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_destroy в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_connect в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_disconnect в функции _on_connect.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_publish в функции _publish_sensor_data.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_loop_start в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_connect_callback_set в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_publish_callback_set в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_strerror в функции _main.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ __imp__mosquitto_connack_string в функции _on_connect.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ _sleep в функции _get_temperature.
+main.obj : error LNK2019: ссылка на неразрешенный внешний символ _random в функции _get_temperature.
+C:\My\Projects\visual\Mosquitto\Debug\Mosquitto.exe : fatal error LNK1120: неразрешенных внешних элементов: 14

@@ -1,0 +1,4 @@
+﻿  main.c
+C:\My\Projects\visual\Mosquitto\Mosquitto\main.c(113,65): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+C:\My\Projects\visual\Mosquitto\Mosquitto\main.c(126,65): warning C4267: функция: преобразование из "size_t" в "int"; возможна потеря данных
+  Mosquitto.vcxproj -> C:\My\Projects\visual\Mosquitto\x64\Debug\Mosquitto.exe
