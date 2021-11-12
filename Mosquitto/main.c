@@ -16,10 +16,20 @@
 #define COND_PATH			"zavod/ceh/condicio/power"
 
 #define KOTEL_VLAZH_PATH	"zavod/ceh/kotel/vlazh"
-
+#define KOTEL_MAX_VLAZH		30
+#define KOTEL_MIN_VLAZH		25
+#define UVLAZH_PATH			"zavod/ceh/kotel/uvlazh/power"
 
 #define TRUBA_TEMP_PATH		"zavod/ceh/truba_s/temp"
+#define TRUBA_MAX_TEMP		30
+#define TRUBA_MIN_TEMP		25
+#define	TRUBA_NAGREV_PATH	"zavod/ceh/truba_s/nagrev/power"
+
+
 #define TRUBA_VLAZH_PATH	"zavod/ceh/truba_s/vlazh"
+#define TRUBA_MAX_VLAZH		30
+#define TRUBA_MIN_VLAZH		25
+#define	TRUBA_UVLAZH_PATH	"zavod/ceh/truba_s/uvlazh/power"
 
  /* Callback called when the client receives a CONNACK message from the broker. */
 void on_connect(struct mosquitto* mosq, void* obj, int reason_code)
@@ -108,7 +118,7 @@ void on_message(struct mosquitto* mosq, void* obj, const struct mosquitto_messag
 			char message[] = "ON";
 			int mid = 1;
 
-			printf("Kotel overheat\n");
+			printf("Kotel overheated\n");
 
 			rc = mosquitto_publish(mosq, &mid, COND_PATH, strlen(message), message, 2, false);
 			if (rc != MOSQ_ERR_SUCCESS) {
@@ -132,14 +142,95 @@ void on_message(struct mosquitto* mosq, void* obj, const struct mosquitto_messag
 	else if (!strcmp(msg->topic, KOTEL_VLAZH_PATH))
 	{
 		printf("kotel vlazh: %s\n", (char*)msg->payload);
+
+		if (atof((char*)msg->payload) > KOTEL_MAX_VLAZH)
+		{
+			int rc;
+			char message[] = "OFF";
+			int mid = 1;
+
+			printf("Kotel over humidified\n");
+
+			rc = mosquitto_publish(mosq, &mid, UVLAZH_PATH, strlen(message), message, 2, false);
+			if (rc != MOSQ_ERR_SUCCESS) {
+				fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
+			}
+		}
+		else if (atof((char*)msg->payload) < KOTEL_MIN_VLAZH)
+		{
+			int rc;
+			char message[] = "ON";
+			int mid = 1;
+
+			printf("Kotel over dried\n");
+
+			rc = mosquitto_publish(mosq, &mid, UVLAZH_PATH, strlen(message), message, 2, false);
+			if (rc != MOSQ_ERR_SUCCESS) {
+				fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
+			}
+		}
 	}
 	else if (!strcmp(msg->topic, TRUBA_TEMP_PATH))
 	{
 		printf("truba temp: %s\n", (char*)msg->payload);
+
+		if (atof((char*)msg->payload) > TRUBA_MAX_TEMP)
+		{
+			int rc;
+			char message[] = "OFF";
+			int mid = 1;
+
+			printf("Truba overheated\n");
+
+			rc = mosquitto_publish(mosq, &mid, TRUBA_NAGREV_PATH, strlen(message), message, 2, false);
+			if (rc != MOSQ_ERR_SUCCESS) {
+				fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
+			}
+		}
+		else if (atof((char*)msg->payload) < TRUBA_MIN_TEMP)
+		{
+			int rc;
+			char message[] = "ON";
+			int mid = 1;
+
+			printf("Truba overcooled\n");
+
+			rc = mosquitto_publish(mosq, &mid, TRUBA_NAGREV_PATH, strlen(message), message, 2, false);
+			if (rc != MOSQ_ERR_SUCCESS) {
+				fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
+			}
+		}
 	}
 	else if (!strcmp(msg->topic, TRUBA_VLAZH_PATH))
 	{
 		printf("truba vlazh: %s\n", (char*)msg->payload);
+
+		if (atof((char*)msg->payload) > TRUBA_MAX_VLAZH)
+		{
+			int rc;
+			char message[] = "OFF";
+			int mid = 1;
+
+			printf("Truba over humidified\n");
+
+			rc = mosquitto_publish(mosq, &mid, TRUBA_UVLAZH_PATH, strlen(message), message, 2, false);
+			if (rc != MOSQ_ERR_SUCCESS) {
+				fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
+			}
+		}
+		else if (atof((char*)msg->payload) < TRUBA_MIN_VLAZH)
+		{
+			int rc;
+			char message[] = "ON";
+			int mid = 1;
+
+			printf("Truba over dried\n");
+
+			rc = mosquitto_publish(mosq, &mid, TRUBA_UVLAZH_PATH, strlen(message), message, 2, false);
+			if (rc != MOSQ_ERR_SUCCESS) {
+				fprintf(stderr, "Error publishing: %s\n", mosquitto_strerror(rc));
+			}
+		}
 	}
 	else
 	{
@@ -153,7 +244,7 @@ void on_message(struct mosquitto* mosq, void* obj, const struct mosquitto_messag
 
 void on_publish(struct mosquitto* mosq, void* obj, int mid)
 {
-	printf("Message with mid %d has been published.\n", mid);
+//	printf("Message with mid %d has been published.\n", mid);
 }
 
 int main(int argc, char* argv[])
